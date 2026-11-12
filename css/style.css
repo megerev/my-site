@@ -1,110 +1,164 @@
-/* style.css — оформление сайта-портфолио (A3).
+/* style.css — оформление сайта-портфолио.
+   Направление «Тихий документ»: тёплая бумага, засечки у имени,
+   линии вместо карточек, один акцент — тёмно-изумрудный.
+
    Правило: цвета не пишем в правилах напрямую — только через переменные.
-   Тогда смена темы = правка 3-4 строк в :root, а не поиск по всему файлу.
+   Тогда смена темы = правка 2-3 строк в :root, а не поиск по всему файлу.
 
    Контраст посчитан по формуле WCAG: (L1 + 0.05) / (L2 + 0.05).
-   Норма для обычного текста — не ниже 4.5 : 1. */
+   Норма для обычного текста — не ниже 4.5 : 1. Все цифры сняты на --bg. */
 
 :root {
-  --bg: #ffffff;        /* фон страницы */
-  --surface: #f4f6fa;   /* фон карточек-разделов */
-  --text: #1b2233;      /* основной текст: 15.87 : 1 на --bg */
-  --muted: #5b6478;     /* второстепенный текст: 5.93 : 1 на --bg, 5.48 : 1 на --surface */
-  --link: #1a56d6;      /* ссылки: 6.28 : 1 на --bg, 5.80 : 1 на --surface */
-  --border: #d7dce6;    /* рамки карточек: декоративные, норма контраста к ним не применяется */
+  --bg: #f6efe2;        /* тёплая бумага (третий образец из черновиков) */
+  --text: #241f1a;      /* основной текст: 14.28 : 1 */
+  --muted: #5c554b;     /* второй план: 6.43 : 1 */
+  --accent: #0d6b52;    /* изумруд: 5.66 : 1 */
+  --line: #d8cbb4;      /* волосяные линии: декоративные, норма к ним не применяется */
 
-  --radius: 12px;
-  --max-width: 44rem;
-  --font: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --max-width: 42rem;
+  --font-body: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-paper: Georgia, "Times New Roman", serif;
 }
 
 * {
   box-sizing: border-box;
 }
 
+/* Фон задан и на html: иначе при «оттягивании» страницы
+   за края (overscroll) видна белая полоса. */
+html {
+  background: var(--bg);
+}
+
 body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
-  font-family: var(--font);
+  font-family: var(--font-body);
   font-size: 1.0625rem;
-  line-height: 1.65;
+  line-height: 1.7;
 }
 
-/* Три полосы страницы выровнены по одной ширине.
-   Обёртка в HTML не нужна: селектор берёт детей body. */
+/* Три полосы страницы выровнены по одной ширине. */
 body > header,
 body > main,
 body > footer {
   max-width: var(--max-width);
   margin-inline: auto;
-  padding-inline: 1.25rem;
+  padding-inline: 1.5rem;
 }
 
 header {
-  padding-block: 2.5rem 1.25rem;
-  text-align: center;
+  padding-block: 4rem 1.75rem;
 }
 
 h1 {
   margin: 0;
-  font-size: clamp(1.6rem, 5vw, 2.1rem);
-  line-height: 1.25;
+  font-family: var(--font-paper);
+  font-weight: 400;
+  font-size: clamp(1.9rem, 5.5vw, 2.75rem);
+  line-height: 1.2;
   letter-spacing: -0.01em;
 }
 
+/* Двойная линия под именем: тонкая на всю ширину (h1::after)
+   и короткий акцентный штрих под ней (header::after).
+   Новых элементов в HTML не нужно — обе линии рисует CSS. */
+h1::after {
+  content: "";
+  display: block;
+  margin-top: 1.25rem;
+  border-top: 1px solid var(--line);
+}
+
+header::after {
+  content: "";
+  display: block;
+  width: 3.5rem;
+  height: 3px;
+  margin-top: 0.4rem;
+  background: var(--accent);
+}
+
+/* Заголовки разделов: мелкий капс, а не крупный — главным должно быть имя. */
 h2 {
-  margin: 0 0 0.75rem;
-  font-size: 1.0625rem;
-  letter-spacing: 0.04em;
+  margin: 0 0 0.9rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--muted);
 }
 
 main {
-  padding-bottom: 1rem;
+  padding-bottom: 0.5rem;
 }
 
+/* Разделы как страницы документа: волосяная линия сверху, без карточек-рамок. */
 main section {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 1.25rem 1.5rem;
-  margin-block: 1rem;
+  padding-block: 1.75rem;
+  border-top: 1px solid var(--line);
+}
+
+main section:first-child {
+  border-top: none;
+  padding-top: 1.25rem;
 }
 
 p {
   margin: 0;
 }
 
+/* Вступление — засечками и крупнее: это титульный абзац, а не справка. */
+#about p {
+  font-family: var(--font-paper);
+  font-size: 1.18rem;
+  line-height: 1.6;
+}
+
 ul {
+  list-style: none;
   margin: 0;
-  padding-left: 1.25rem;
+  padding: 0;
+}
+
+li {
+  position: relative;
+  padding-left: 1.4rem;
+}
+
+li::before {
+  content: "—";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
 }
 
 li + li {
-  margin-top: 0.4rem;
+  margin-top: 0.6rem;
 }
 
 a {
-  color: var(--link);
-  text-underline-offset: 0.2em;
+  color: var(--accent);
+  text-underline-offset: 0.18em;
 }
 
 a:hover {
   text-decoration-thickness: 2px;
 }
 
-/* Фокус видно всегда и одинаково: это про доступность,
-   а не про красоту. Обводка --link даёт 5.8 : 1 к фону карточки. */
+/* Фокус видно всегда и одинаково: это про доступность, а не про красоту.
+   Обводка --accent даёт 5.66 : 1 к бумаге. */
 :focus-visible {
-  outline: 3px solid var(--link);
-  outline-offset: 2px;
-  border-radius: 4px;
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
 }
 
 footer {
-  padding-block: 1rem 2.5rem;
+  padding-block: 1.5rem 3.5rem;
   color: var(--muted);
-  font-size: 0.9rem;
+  font-family: var(--font-paper);
+  font-size: 0.92rem;
+  font-style: italic;
 }
