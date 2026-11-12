@@ -1,3 +1,109 @@
-/* style.css — оформление сайта.
-   A1: файл создан пустым, оформление делаем в A3
-   (свои CSS-переменные + контраст по WCAG не ниже 4.5). */
+/* style.css — оформление сайта-портфолио (A3).
+   Правило: цвета не пишем в правилах напрямую — только через переменные.
+   Тогда смена темы = правка 3-4 строк в :root, а не поиск по всему файлу.
+
+   Контраст посчитан по формуле WCAG: (L1 + 0.05) / (L2 + 0.05).
+   Норма для обычного текста — не ниже 4.5 : 1. */
+
+:root {
+  --bg: #ffffff;        /* фон страницы */
+  --surface: #f4f6fa;   /* фон карточек-разделов */
+  --text: #1b2233;      /* основной текст: 15.87 : 1 на --bg */
+  --muted: #5b6478;     /* второстепенный текст: 5.93 : 1 на --bg, 5.48 : 1 на --surface */
+  --link: #1a56d6;      /* ссылки: 6.28 : 1 на --bg, 5.80 : 1 на --surface */
+  --border: #d7dce6;    /* рамки карточек: декоративные, норма контраста к ним не применяется */
+
+  --radius: 12px;
+  --max-width: 44rem;
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+}
+
+/* Три полосы страницы выровнены по одной ширине.
+   Обёртка в HTML не нужна: селектор берёт детей body. */
+body > header,
+body > main,
+body > footer {
+  max-width: var(--max-width);
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
+
+header {
+  padding-block: 2.5rem 1.25rem;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(1.6rem, 5vw, 2.1rem);
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+h2 {
+  margin: 0 0 0.75rem;
+  font-size: 1.0625rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+main {
+  padding-bottom: 1rem;
+}
+
+main section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem 1.5rem;
+  margin-block: 1rem;
+}
+
+p {
+  margin: 0;
+}
+
+ul {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+li + li {
+  margin-top: 0.4rem;
+}
+
+a {
+  color: var(--link);
+  text-underline-offset: 0.2em;
+}
+
+a:hover {
+  text-decoration-thickness: 2px;
+}
+
+/* Фокус видно всегда и одинаково: это про доступность,
+   а не про красоту. Обводка --link даёт 5.8 : 1 к фону карточки. */
+:focus-visible {
+  outline: 3px solid var(--link);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+footer {
+  padding-block: 1rem 2.5rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
