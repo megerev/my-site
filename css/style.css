@@ -50,6 +50,7 @@ body > footer {
 
 header {
   padding-block: 4rem 1.75rem;
+  text-align: center;
 }
 
 h1 {
@@ -77,6 +78,7 @@ header::after {
   width: 3.5rem;
   height: 3px;
   margin-top: 0.4rem;
+  margin-inline: auto; /* штрих по центру вместе с именем */
   background: var(--accent);
 }
 
